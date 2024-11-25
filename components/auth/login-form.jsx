@@ -29,6 +29,10 @@ import facebook from "@/public/images/auth/facebook.png";
 import twitter from "@/public/images/auth/twitter.png";
 import GithubIcon from "@/public/images/auth/github.png";
 
+import { Badge } from "@/components/ui/badge";
+import { Star } from "lucide-react";
+
+
 const schema = z.object({
   email: z.string().email({ message: "Your email is invalid." }),
   password: z.string().min(4),
@@ -160,7 +164,7 @@ const LogInForm = () => {
           <div className="flex-1 flex  items-center gap-1.5 ">
             <Checkbox
               size="sm"
-              className="border-default-300 mt-[1px]"
+              className="border-default-800 mt-[1px]"
               id="isRemebered"
             />
             <Label
@@ -170,7 +174,7 @@ const LogInForm = () => {
               Remember me
             </Label>
           </div>
-          <Link href="/auth/forgot" className="flex-none text-sm text-secondary">
+          <Link href="/auth/forgot" className="flex-none text-sm text-default-600">
             Forget Password?
           </Link>
         </div>
@@ -185,61 +189,35 @@ const LogInForm = () => {
         </Button>
       </form>
       <div className="mt-6 xl:mt-8 flex flex-wrap justify-center gap-4">
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-          disabled={isPending}
-          onClick={() =>
-            signIn("google", {
-              callbackUrl: "/dashboard",
-            })
-          }
-        >
-          <Image src={googleIcon} alt="google" className="w-5 h-5" />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full  border-default-300 hover:bg-transparent"
-          disabled={isPending}
-          onClick={() =>
-            signIn("github", {
-              callbackUrl: "/dashboard",
-              redirect: false,
-            })
-          }
-        >
-          <Image src={GithubIcon} alt="google" className="w-5 h-5" />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-        >
-          <Image src={facebook} alt="google" className="w-5 h-5" />
-        </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full  border-default-300 hover:bg-transparent"
-        >
-          <Image src={twitter} alt="google" className="w-5 h-5" />
-        </Button>
+        <Badge color="secondary">
+            <Star className=" ltr:mr-1 rtl:ml-1 h-3 w-3" />
+                Don't have an account yet? 
+                
+                <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
+                    <Button
+                        className="bg-slate-400 hover:bg-amber-900 text-white"
+                        disabled={isPending}
+                        color="dark"
+                      >
+                        {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {isPending ? "Loading..." : "Register Account"}
+                    </Button>
+                </Link>
+          </Badge>
+          
       </div>
-      <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">
-        Don't have an account?{" "}
-        <Link href="/auth/register" className="text-amber-800 underline">
-          {" "}
-          Register Account{" "}
-        </Link>
-      </div>
+      
     </div>
   );
 };
 
 export default LogInForm;
+
+
+/**
+ * 
+ * {" "}
+                  Register Account{" "}
+                  
+ * 
+ */
