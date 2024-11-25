@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import Logo from "@/public/images/logo/Libertalia1.png";
-import balwin from "@/public/images/logo/Balwin.png";
+import balwin from "@/public/images/logo/balwin.png";
 import p24 from "@/public/images/logo/p24.png";
 import education from "@/public/images/logo/education.jpeg";
 import libertalia from "@/public/images/logo/libertalia.png";
