@@ -138,6 +138,7 @@ const RegForm = () => {
 
       // Redirect to the admin dashboard tour
       router.push("/dashboard");
+    
     } catch (err) {
       setError(err.message);
     } finally {
