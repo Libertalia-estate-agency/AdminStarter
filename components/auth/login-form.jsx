@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -12,6 +11,7 @@ import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
+import React, { useEffect, useState } from "react";
 
 import { SiteLogo } from "@/components/svg";
 import { Logo } from "@/components/svg";
@@ -32,6 +32,8 @@ import GithubIcon from "@/public/images/auth/github.png";
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
 
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/config";
 
 const schema = z.object({
   email: z.string().email({ message: "Your email is invalid." }),
@@ -40,9 +42,14 @@ const schema = z.object({
 import { useMediaQuery } from "@/hooks/use-media-query";
 
 const LogInForm = () => {
+
   const [isPending, startTransition] = React.useTransition();
   const [passwordType, setPasswordType] = React.useState("password");
   const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
+
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const togglePasswordType = () => {
     if (passwordType === "text") {
@@ -51,6 +58,7 @@ const LogInForm = () => {
       setPasswordType("text");
     }
   };
+
   const {
     register,
     handleSubmit,
@@ -64,6 +72,7 @@ const LogInForm = () => {
       password: "password",
     },
   });
+
   const [isVisible, setIsVisible] = React.useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -85,6 +94,37 @@ const LogInForm = () => {
     });
   };
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      setIsLoading(true);  
+
+      startTransition(async () => {
+
+      // Create user with email and password
+      const userCredential = await signInWithEmailAndPassword(auth, email, password).then(() => {
+        console.log("SIGNING IN USER WITH EMAIL ::: " + email);  
+        const user = userCredential.user;
+        console.log("HANDLE LOGIN ::: SIGNING IN USER ::: " + JSON.stringify(user.email));
+        toast.success("Login Successful");
+        window.location.assign("/dashboard");
+        reset();
+      });
+      
+    });
+      // Redirect to the admin dashboard tour
+      //router.push("/dashboard");
+    
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  
+
+  };
+
   return (
     <div className="w-full py-1">
       <Link href="/dashboard" className="flex justify-center">
@@ -98,7 +138,8 @@ const LogInForm = () => {
       <div className="2xl:text-lg text-base text-default-600 2xl:mt-2 leading-6 flex justify-center">
         Please Enter Your Login Information To Access Platform.
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 2xl:mt-7">
+
+      <form onSubmit={handleLogin} className="mt-5 2xl:mt-7">
         <div>
           <Label htmlFor="email" className="mb-2 font-medium text-default-600">
             Email{" "}
@@ -187,25 +228,27 @@ const LogInForm = () => {
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isPending ? "Loading..." : "Sign In"}
         </Button>
+
+          <div className="mt-6 xl:mt-8 flex flex-wrap justify-center gap-4">
+          <Badge color="secondary">
+              <Star className=" ltr:mr-1 rtl:ml-1 h-3 w-3" />
+                  Don't have an account yet? 
+                  
+                  <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
+                      <Button
+                          className="bg-slate-400 hover:bg-amber-900 text-white"
+                          disabled={isPending}
+                          color="dark"
+                        >
+                          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                          {isPending ? "Loading..." : "Register Account"}
+                      </Button>
+                  </Link>
+            </Badge>
+            
+          </div>
       </form>
-      <div className="mt-6 xl:mt-8 flex flex-wrap justify-center gap-4">
-        <Badge color="secondary">
-            <Star className=" ltr:mr-1 rtl:ml-1 h-3 w-3" />
-                Don't have an account yet? 
-                
-                <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
-                    <Button
-                        className="bg-slate-400 hover:bg-amber-900 text-white"
-                        disabled={isPending}
-                        color="dark"
-                      >
-                        {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                        {isPending ? "Loading..." : "Register Account"}
-                    </Button>
-                </Link>
-          </Badge>
-          
-      </div>
+      
       
     </div>
   );

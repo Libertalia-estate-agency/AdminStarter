@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+
+import { Loader } from "lucide-react";
+
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -30,7 +33,9 @@ import { Logo5 } from "@/components/svg";
 
 import signUp from "@/firebase/auth/signup";
 
-
+import { auth,db } from "@/firebase/config";
+import { getFirestore, collection, getDocs, query, where, setDoc, doc } from "firebase/firestore";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Badge } from "@/components/ui/badge";
@@ -75,6 +80,23 @@ const RegForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  useEffect(()=> {
+   
+    /**
+    const usersRef = collection(db, "users");
+    const q = query(usersRef);
+    
+    getDocs(q)
+        .then((querySnapshot) => {
+          console.log("USERS COLLECTION  :::: " + JSON.stringify(querySnapshot));
+       
+        })
+        .catch((error) => {
+            console.error("Error querying or setting document:", error);
+        });
+    */
+  });
+
 
   const {
     register,
@@ -110,46 +132,59 @@ const RegForm = () => {
 
     const { fullName, phoneNumber, email, password, confirmPassword } = formData;
 
+    console.log("FORM DATA  :::: " + JSON.stringify(formData));
+
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
 
-    const auth = getAuth();
-    const db = getFirestore();
+    //const auth = getAuth();
+    //const db = getFirestore();
 
-    try {
-      setIsLoading(true);
-      // Create user with email and password
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+    startTransition(async () => {
 
-      // Send email verification
-      await sendEmailVerification(user);
+      try {
+        setIsLoading(true);
+  
+  
+        // Create user with email and password
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
+  
+        // Send email verification
+        await sendEmailVerification(user).then(() => {
+          console.log("Verification email sent to", user.email);
+        });
 
-      // Save user details to Firestore
-      await setDoc(doc(db, "users", user.uid), {
-        fullName,
-        phoneNumber,
-        email,
-        role: "agent", // Default role
-        createdAt: new Date().toISOString(),
-      });
 
-      // Redirect to the admin dashboard tour
-      router.push("/dashboard");
+  
+        // Save user details to Firestore
+        await setDoc(doc(db, "users", user.uid), {
+          fullName,
+          phoneNumber,
+          email,
+          role: "agent", // Default role
+          createdAt: new Date().toISOString(),
+        });
+  
+        // Redirect to the admin dashboard tour
+        router.push("/dashboard");
+      
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
     
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    });
 
+  };
 
   return (
     <div className="w-full">
-      <Link href="/dashboard" className="flex justify-center">
+      <Link href="/" className="flex justify-center">
         <Logo4 className="h-28 w-28 2xl:w-28 2xl:h-28 text-primary" />
       </Link>
       <div className="2xl:mt-3 mt-3 2xl:text-3xl text-2xl font-bold text-default-200 flex justify-center underline">
@@ -306,7 +341,7 @@ const RegForm = () => {
             Confirm that you have read and agree to abide by our <span className="underline text-amber-300 hover:text-amber-800"> Terms & Conditions </span>
           </Label>
         </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        
         <Button
           className="w-full hover:bg-amber-700"
           disabled={isPending}
@@ -315,6 +350,10 @@ const RegForm = () => {
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isPending ? "Registering..." : "Create an Account"}
         </Button>
+
+        {error && <p style={{ color: "red" }} className="m-2">{error}</p>}
+        {success && <p style={{ color: "green" }} className="m-2">Successfully registered account </p>}
+      
       </form>
       
       <div className="mt-8 flex flex-wrap justify-center gap-4">
