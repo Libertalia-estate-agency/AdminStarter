@@ -149,7 +149,14 @@ const RegForm = () => {
   
   
         // Create user with email and password
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password).then((response) => {
+          console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(response));
+          // Redirect to the admin dashboard tour
+          toast.success(JSON.stringify(response));
+          reset();
+          router.push("/");
+        });
+
         const user = userCredential.user;
         console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
   
@@ -167,10 +174,10 @@ const RegForm = () => {
           email,
           role: "agent", // Default role
           createdAt: new Date().toISOString(),
+        }).then((result) => {
+          console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
         });
   
-        // Redirect to the admin dashboard tour
-        router.push("/dashboard");
       
       } catch (err) {
         setError(err.message);

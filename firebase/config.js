@@ -33,6 +33,13 @@ const auth = getAuth(app);
 // Initialize Firestore
 const db = getFirestore(app);
 
+async function getToken(email, password) {
+  const userCredential = await signInWithEmailAndPassword(auth, email, password);
+  const token = await userCredential.user.getIdToken();
+  console.log("Token:", token);
+}
+
+//getToken("your-email@example.com", "your-password");
 
 export { auth, db };
 
