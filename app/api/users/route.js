@@ -4,11 +4,16 @@ import { firestore, auth } from  "@/firebase/firebaseAdmin";
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url);
+    console.log("API GET USERS :::: SEARCH PARAMS :::: " + JSON.stringify(searchParams));
+    
     const userId = searchParams.get("userId");
-
+    console.log("API GET USERS :::: userId :::: " + JSON.stringify(userId));
+    
     if (userId) {
       // Fetch specific user details
       const userDoc = await firestore.collection("users").doc(userId).get();
+      console.log("API GET USERS :::: userDoc :::: " + JSON.stringify(userDoc));
+
       if (!userDoc.exists) {
         return new Response(JSON.stringify({ error: "User not found" }), {
           status: 404,
@@ -19,6 +24,8 @@ export async function GET(req) {
 
     // Fetch all users
     const usersSnapshot = await firestore.collection("users").get();
+    console.log("API GET USERS :::: usersSnapshot :::: " + JSON.stringify(usersSnapshot));
+
     const users = usersSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -62,6 +69,8 @@ export async function POST(req) {
     return new Response(JSON.stringify({ uid: userRecord.uid }), {
       status: 201,
     });
+
+    
   } catch (error) {
     console.error("Error creating user:", error);
     return new Response(JSON.stringify({ error: error.message }), {

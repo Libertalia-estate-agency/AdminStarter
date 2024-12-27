@@ -17,31 +17,32 @@ const About = () => {
         </Button>
       </CardHeader>
       <CardContent>
-        <div className="text-sm text-default-600 mb-3">Hi I'm Jennyfer Frankin, It will be as simple as Occidental; in fact, it will be Occidental.
-          To an English person, it will seem like simplified English,
-          as a skeptical Cambridge friend of mine told me what Occidental is European languages are members of the same family.</div>
+        <div className="text-sm text-default-600 mb-3">Hi I'm Mphilo Hlophe, head developer responsible for the development and management of Libertalia Properties.
+            Full-stack developer with 5+ years of experience in building scalable web and mobile applications. Passionate about creating seamless user experiences and implementing efficient back-end solutions.
+        </div>
         <div className="text-sm text-default-600">
-          You always want to make sure that your fonts work well together and try to limit the number of fonts you use to three or less.
-          Experiment and play around with the fonts that you already have in the software you’re working with reputable font websites.
-          This may be the most commonly encountered tip I received from the designers I spoke with.
-          They highly encourage that you use different fonts in one design, but do not over-exaggerate and go overboard.
+        Programming Languages: (JavaScript, Python, Java).
+        Frameworks/Libraries: (React, Next.js, Django, Flutter).
+        Databases: (MongoDB, Firebase, PostgreSQL).
+        DevOps Tools: (Docker, Kubernetes, Jenkins).
+        Others: APIs, Cloud Services, Testing Tools.
         </div>
         <div className='mt-6 flex flex-wrap items-center gap-6 2xl:gap-16'>
           {
             [
               {
                 title: "Designation",
-                position: "Lead UX/UI Designer",
+                position: "Lead Developer",
                 icon: UserSign
               },
               {
                 title: "Designation",
-                position: "Lead UX/UI Designer",
+                position: "Software Engineer",
                 icon: Web
               },
               {
                 title: "Mail",
-                position: "jennyfer.frankin@gmail.com",
+                position: "lindimphilo@gmail.com",
                 icon: Mail2
               }
             ].map((item, index) => (

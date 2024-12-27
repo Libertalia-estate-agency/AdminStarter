@@ -82,19 +82,33 @@ const LogInForm = () => {
   
   const onSubmit = (data) => {
     startTransition(async () => {
+
       let response = await signIn("credentials", {
         email: data.email,
         password: data.password,
         redirect: false,
       });
+
       if (response?.ok) {
-        toast.success("Login Successful");
-        window.location.assign("/dashboard");
-        reset();
+        //toast.success("Login Successful");
+        console.log("Login Succesful, instead of toast");
+
       } else if (response?.error) {
+        console.log("ERROR: " + response?.error);
         toast.error(response?.error);
       }
-    });
+
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        console.log("SIGNING IN USER WITH EMAIL ::: " + email);
+        const user = userCredential.user;
+        console.log("HANDLE LOGIN ::: SIGNING IN USER ::: " + JSON.stringify(user.email));
+        toast.success("Login Successful");
+        window.location.assign("/tour");
+        console.log("User logged in:", userCredential.user);
+      })
+
+    })
   };
 
   /**

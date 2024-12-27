@@ -12,7 +12,7 @@ import Image from "next/image";
 const Portfolio = () => {
   const data = [
     {
-      name: "Github",
+      name: "Property24",
       image: Github,
       link: "#",
     },

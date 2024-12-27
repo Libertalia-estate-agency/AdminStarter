@@ -13,7 +13,6 @@ import { getFirestore } from "firebase/firestore";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
-
 const firebaseConfig = {
   apiKey: "AIzaSyC0RE1L9_7uRHh-DqcE2Uiqsa-ZTpgKQ8s",
   authDomain: "libertalia-properties-623a9.firebaseapp.com",
@@ -42,6 +41,6 @@ async function getToken(email, password) {
 
 //getToken("your-email@example.com", "your-password");
 
-export { auth, db, getToken };
+export { auth, db };
 
 export default app;

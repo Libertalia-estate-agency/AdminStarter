@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@iconify/react";
-import User from "@/public/images/avatar/user.png";
+import User from "@/public/images/avatar/user1.png";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
@@ -47,8 +47,8 @@ const Header = () => {
                 />
               </div>
               <div>
-                <div className="text-xl lg:text-2xl font-semibold text-primary-foreground mb-1">Jennyfer Franking</div>
-                <div className="text-xs lg:text-sm font-medium text-default-100 dark:text-default-900 pb-1.5">Data Analytics</div>
+                <div className="text-xl lg:text-2xl font-semibold text-primary-foreground mb-1">Mpilo Hlophe</div>
+                <div className="text-xs lg:text-sm font-medium text-default-100 dark:text-default-900 pb-1.5">Administrator</div>
               </div>
             </div>
             <Button asChild className="absolute bottom-5 ltr:right-6 rtl:left-6 rounded px-5 hidden lg:flex" size="sm">

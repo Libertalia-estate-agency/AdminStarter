@@ -8,17 +8,17 @@ const UserInfo = () => {
     {
       icon: User,
       label: "Full Name",
-      value: "Jennyfer Frankin"
+      value: "Mpilo Hlophe"
     },
     {
       icon: Phone,
       label: "Mobile",
-      value: "+(1) 987 6543"
+      value: "+(27) 73 999 8954"
     },
     {
       icon: Location,
       label: "Location",
-      value: "101, California"
+      value: "Magwa Crescent, Maxwell Office Park, Waterfall City, Midrand, Johannesburg, Gauteng, South Africa"
     },
     {
       icon: CalenderCheck,
@@ -38,7 +38,7 @@ const UserInfo = () => {
       </CardHeader>
       <CardContent className="px-4">
         <p className="text-sm text-default-600">
-          Tart I love sugar plum I love oat cake. Sweet roll caramels I love jujubes. Topping cake wafer..
+          I am a software developer who enjoys the pleasure of developing robust software solutions..
         </p>
         <ul className="mt-6 space-y-4">
           {

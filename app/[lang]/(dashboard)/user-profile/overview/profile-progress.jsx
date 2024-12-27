@@ -12,8 +12,8 @@ const ProfileProgress = () => {
     </CardHeader>
     <CardContent className="px-4">
     <div className="flex flex-col items-end gap-1">
-        <Label className="text-sm font-medium text-default-700">62% Complete</Label>
-        <Progress value={62}  color="primary" isStripe className="w-full"  />
+        <Label className="text-sm font-medium text-default-700">5% Complete</Label>
+        <Progress value={5}  color="primary" isStripe className="w-full"  />
       </div>
     </CardContent>
   </Card>

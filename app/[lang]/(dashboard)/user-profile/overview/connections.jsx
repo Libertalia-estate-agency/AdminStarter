@@ -15,32 +15,32 @@ import Link from "next/link";
 const Connections = () => {
   const data = [
     {
-      name: "Alex Smith",
+      name: "Sphiwe Mtsweni",
       avatar: avatar1,
       count: 25
     },
     {
-      name: "Darrel Barnes",
+      name: "Thembisa Kunene",
       avatar: avatar2,
       count: 26
     },
     {
-      name: "Eugenia Moore",
+      name: "Nkateko Hlongwane",
       avatar: avatar3,
       count: 27
     },
     {
-      name: "Alice Stone",
+      name: "Buhle Tlale",
       avatar: avatar4,
       count: 28
     },
     {
-      name: "Monica Bellas",
+      name: "Nomvula Msangwanayi",
       avatar: avatar5,
       count: 29
     },
     {
-      name: "Prantik Chakraborty",
+      name: "Charlotte Poulten",
       avatar: avatar6,
       count: 30
     }
@@ -48,7 +48,7 @@ const Connections = () => {
   return (
     <Card>
       <CardHeader className="flex-row items-center border-none mb-2">
-        <CardTitle className="flex-1"> My Connections </CardTitle>
+        <CardTitle className="flex-1"> My Colleagues </CardTitle>
         <Button
           size="icon"
           className="flex-none bg-default-100 dark:bg-default-50 text-default-500 hover:bg-default-100 rounded h-6 w-6 -mt-1"

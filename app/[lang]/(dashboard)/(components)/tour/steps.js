@@ -26,8 +26,8 @@ const steps = [
         },
       },
     ],
-    title: "Welcome Back !",
-    text: ["This is Step 1"],
+    title: "Welcome To Libertalia Properties !",
+    text: ["Start by completing your profile for full benefits of the system and exploring your dashboard to access your analytic metrics."],
   },
 
   {
@@ -57,8 +57,8 @@ const steps = [
         },
       },
     ],
-    title: "Register your account",
-    text: "Get your Free DashTail account now.",
+    title: "Verify your account",
+    text: "Verify your account using your work email address",
   },
   {
     id: "intro2",
@@ -87,7 +87,7 @@ const steps = [
       },
     ],
     title: "Login your account",
-    text: "Sign in to continue to DashTail.",
+    text: "Sign in to continue to Libertalia.",
   },
   {
     id: "intro3",
@@ -115,8 +115,8 @@ const steps = [
         },
       },
     ],
-    title: "Get yout Product",
-    text: "Sign in to continue to DashTail.",
+    title: "Explore your dashboard",
+    text: "Your dashboard is ready! Here, you can manage listings, view analytics, and more ..",
   },
   {
     id: "intro4",
@@ -130,7 +130,7 @@ const steps = [
         },
       },
       {
-        text: "Thank you !",
+        text: "Thank You!",
         classes: "btn btn-primary",
         action() {
           return this.complete();
@@ -138,7 +138,7 @@ const steps = [
       },
     ],
     title: "Thank you !",
-    text: "Sign in to continue to DashTail.",
+    text: "Your tools are ready to help you manage your listings!",
   },
 ];
 

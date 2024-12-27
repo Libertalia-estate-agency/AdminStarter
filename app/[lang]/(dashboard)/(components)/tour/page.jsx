@@ -8,6 +8,10 @@ import newSteps from "./steps";
 import "shepherd.js/dist/css/shepherd.css";
 
 import tourlogo from "@/public/images/watermark/codeshaperlogo1.png";
+import Logo from "@/public/images/watermark/libertalia.png"
+
+import { useRouter } from "next/router";
+
 import Image from "next/image";
 
 const tourOptions = {
@@ -30,6 +34,7 @@ const Autton = () => {
 };
 
 const UiTour = () => {
+
   return (
     <div>
       <ShepherdTour steps={newSteps} tourOptions={tourOptions}>
@@ -38,27 +43,25 @@ const UiTour = () => {
           <div>
             <Card>
               <CardHeader>
-                <CardTitle>Tour</CardTitle>
+                <CardTitle>Libertalia Dashboard</CardTitle>
               </CardHeader>
               <CardContent>
                 {" "}
                 <p className="text-sm text-default-400 dark:text-default-600  mb-4">
-                  The{" "}
-                  <code className="text-primary">steps and tourOptions</code>{" "}
-                  props passes data in{" "}
-                  <code className="text-primary">ShepherdTour</code> component
-                  to navigate the tour.
+                  Easily manage your{" "}
+                  <code className="text-primary">listings, view analytics</code>{" "}
+                  and connect with potential {" "}
+                  <code className="text-primary">buyers </code> and renters
+                  seamlessly.
                 </p>
               </CardContent>
               <CardContent>
                 <div className="mb-4">
-                  <Button>Start Tour</Button>
+                  <Button>Commence Tour</Button>
                 </div>
 
                 <p className=" text-muted-foreground mb-4">
-                  Use when you want to help users along getting accustomed to
-                  your user interface or Use when you want to notify your users
-                  of new or unfamiliar features.
+                Welcome to Libertalia Properties! Your partner in property management and real estate success.
                 </p>
 
                 <div>
@@ -71,18 +74,16 @@ const UiTour = () => {
                         <div className="w-30 h-5">
                           <Image
                             className="w-full h-full"
-                            src={tourlogo}
+                            src={Logo}
                             alt=" dashtail logo"
                           />
                         </div>
                       </div>
                       <h5 className=" text-base mb-2 font-medium text-default-700 ">
-                        Responsive Admin Dashboard Template
+                          Libertalia Properties
                       </h5>
                       <p className=" text-muted-foreground text-sm mb-3">
-                        Vestibulum auctor tincidunt semper. Phasellus ut
-                        vulputate lacus. Suspendisse ultricies mi eros, sit amet
-                        tempor nulla varius sed dapibus in tellus.
+                      Libertalia Properties is a modern real estate management platform designed to empower agents, administrators, and clients in their property transactions. Built to simplify and enhance real estate operations, Libertalia Properties provides innovative tools and seamless user experiences to help users thrive in the competitive property market.
                       </p>
                       <div className="  space-x-3 rtl:space-x-reverse">
                         <Button size="sm">View more</Button>
@@ -104,10 +105,10 @@ const UiTour = () => {
                           </div>
                         </div>
                         <h5 className="mb-2 text-default-700  font-medium text-base">
-                          Free register
+                          Account Verification
                         </h5>
                         <p className="text-muted-foreground mb-0 text-sm">
-                          Get your Free DashTail account now.
+                        Let's get you started with managing your properties efficiently.
                         </p>
                       </CardContent>
                     </Card>
@@ -146,10 +147,10 @@ const UiTour = () => {
                           </div>
                         </div>
                         <h5 className="mb-2 text-default-700  font-medium text-base">
-                          Get Product
+                          Libertalia Dashboard
                         </h5>
                         <p className="text-muted-foreground mb-0 text-sm">
-                          Sign in to continue to DashTail.
+                          Your tools are ready to help you manage your listings!  
                         </p>
                       </CardContent>
                     </Card>
@@ -162,7 +163,14 @@ const UiTour = () => {
                         id="thankyou-tour"
                       >
                         <div className="w-30">
-                          <Button>Thank you !</Button>
+                          <Button
+                            variant="outline"
+                            size="md"
+                            className="h-8 w-8"
+                          >
+                            <Icon icon="heroicons:home" className="w-5 h-5 rtl:rotate-180" />
+                            Dashboard
+                          </Button>
                         </div>
                       </div>
                     </div>

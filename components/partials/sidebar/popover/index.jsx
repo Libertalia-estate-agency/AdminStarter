@@ -48,13 +48,13 @@ const PopoverSidebar = ({ trans }) => {
 
 
       if (item?.child) {
-        console.log("POPOVER :: USE EFFECT :::: MENUS MAP ::: if(item?.child) :::: item :::: " + JSON.stringify(item));
-        console.log("POPOVER :: USE EFFECT :::: MENUS MAP ::: if(item?.child) :::: item?.child :::: " + JSON.stringify(item?.child));
+        //console.log("POPOVER :: USE EFFECT :::: MENUS MAP ::: if(item?.child) :::: item :::: " + JSON.stringify(item));
+        //console.log("POPOVER :: USE EFFECT :::: MENUS MAP ::: if(item?.child) :::: item?.child :::: " + JSON.stringify(item?.child));
 
         item.child.map((childItem, j) => {
           if (isLocationMatch(childItem.href, locationName)) {
             subMenuIndex = i;
-            console.log("POPOVER :: USE EFFECT :::: MENUS MAP ::: if(item?.child) :::: subMenuIndex :::: " + JSON.stringify(subMenuIndex));
+            //console.log("POPOVER :: USE EFFECT :::: MENUS MAP ::: if(item?.child) :::: subMenuIndex :::: " + JSON.stringify(subMenuIndex));
 
           }
           if (childItem?.multi_menu) {

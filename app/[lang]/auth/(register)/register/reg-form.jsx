@@ -114,18 +114,94 @@ const RegForm = () => {
   const onSubmit = (data) => {
     
     startTransition(async () => {
-      let response = await addUser(data);
+      setIsLoading(true);
+      console.log("REG FORM ::: ONSUBMIT ::: DATA ::: " + JSON.stringify(data));
 
-      if (response?.status === "success") {
-        toast.success(response?.message);
-        reset();
+      let objUser = { ...data};
+      console.log("REG FORM ::: ONSUBMIT ::: DATA ::: " + JSON.stringify(objUser));
+      
+
+
+      // Create user with email and password
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(async (userObj) => {
+        
+        console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj.user.uid));
+        objUser.uid = userObj.user.uid;
+        console.log("REG FORM ::: objUser ::: " + JSON.stringify(objUser));
+
+        //console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj));
+        let response = await addUser(objUser);
+        console.log("response ::: " + JSON.stringify(response));
+
+        if (response?.status === "success") {
+        console.log("HANDLE REGISTER ::: CREATED USER successfully");
+        toast.success("Registration Successful");
+
+        // toast.success(response?.message);
+        
         router.push("/");
-      } else {
-        toast.error(response?.message);
-      }
-    });
+        reset();
+        } else {
+          toast.error(response?.message);
+        }
+        //const user = userCredential.user;
+        //console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
+        //router.push("/");
+        //window.location.assign("/");
+        //reset();
 
-  };
+        /**
+        // Save user details to Firestore
+        await setDoc(doc(db, "users", userObj.user.uid), {
+          fullName: data.name,
+          email: data.email,
+          role: "agent", // Default role
+          createdAt: new Date().toISOString(),
+        }).then(async (result) => {
+          console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
+
+          /**
+           // Send email verification
+            await sendEmailVerification(userObj.user).then(() => {
+              console.log("Verification email sent to", userObj.user.email);
+              reset();
+              router.push("/login");
+            }).catch((error) => {
+              console.error("Error sending verification email:", error);
+            });
+        });
+        */
+       
+        
+      }).catch((error) => {
+        console.error("Error creating user:", error);
+        toast.error(error.message);
+      });
+
+/**
+        
+ */
+        // Redirect to the admin dashboard tour
+        //toast.success(JSON.stringify(response));
+        
+      })
+
+      /**
+
+      let firebaseResponse = await createUserWithEmailAndPassword("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      }).then(() => {
+        console.log("SIGNING IN USER WITH EMAIL ::: " + email);
+        const user = userCredential.user;
+        console.log("HANDLE LOGIN ::: SIGNING IN USER ::: " + JSON.stringify(user.email));
+         toast.success("Login Successful");
+      })     */
+    
+
+  }
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -149,35 +225,39 @@ const RegForm = () => {
   
   
         // Create user with email and password
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password).then((response) => {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+        .then((response) => {
           console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(response));
           // Redirect to the admin dashboard tour
           toast.success(JSON.stringify(response));
-          reset();
-          router.push("/");
-        });
+          
+        }).finally(async () => {
+          
+          const user = userCredential.user;
+          console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
+    
+          // Send email verification
+          await sendEmailVerification(user).then(() => {
+            console.log("Verification email sent to", user.email);
+          }).catch((error) => {
+            console.error("Error sending verification email:", error);
+          });;
+    
+          // Save user details to Firestore
+          await setDoc(doc(db, "users", user.uid), {
+            fullName,
+            phoneNumber,
+            email,
+            role: "agent", // Default role
+            createdAt: new Date().toISOString(),
+          }).then((result) => {
+            console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
+            reset();
+            router.push("/");
+          });
+            
+        });;
 
-        const user = userCredential.user;
-        console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
-  
-        // Send email verification
-        await sendEmailVerification(user).then(() => {
-          console.log("Verification email sent to", user.email);
-        });
-
-
-  
-        // Save user details to Firestore
-        await setDoc(doc(db, "users", user.uid), {
-          fullName,
-          phoneNumber,
-          email,
-          role: "agent", // Default role
-          createdAt: new Date().toISOString(),
-        }).then((result) => {
-          console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
-        });
-  
       
       } catch (err) {
         setError(err.message);
@@ -201,17 +281,160 @@ const RegForm = () => {
         Register your account with Libertalia!
       </div>
       
-      <form onSubmit={handleRegister} className="mt-5 xl:mt-7">
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 xl:mt-7">
+        <div className="space-y-4">
+          <div>
+            <Label htmlFor="name" className="mb-2 font-medium text-default-600">
+              Full Name{" "}
+            </Label>
+            <Input
+              disabled={isPending}
+              {...register("name")}
+              type="text"
+              id="name"
+              className={cn("", {
+                "border-destructive": errors.name,
+              })}
+              size={!isDesktop2xl ? "xl" : "lg"}
+            />
+            {errors.name && (
+              <div className=" text-destructive mt-2 mb-4">
+                {errors.name.message}
+              </div>
+            )}
+          </div>
+          <div>
+            <Label
+              htmlFor="email"
+              className="mb-2 font-medium text-default-600"
+            >
+              Email{" "}
+            </Label>
+            <Input
+              disabled={isPending}
+              {...register("email")}
+              type="email"
+              id="email"
+              className={cn("", {
+                "border-destructive": errors.email,
+              })}
+              size={!isDesktop2xl ? "xl" : "lg"}
+            />
+            {errors.email && (
+              <div className=" text-destructive mt-2 mb-4">
+                {errors.email.message}
+              </div>
+            )}
+          </div>
+          <div>
+            <Label
+              htmlFor="password"
+              className="mb-2 font-medium text-default-600"
+            >
+              Password{" "}
+            </Label>
+            <div className="relative">
+              <Input
+                type={passwordType}
+                id="password"
+                size={!isDesktop2xl ? "xl" : "lg"}
+                disabled={isPending}
+                {...register("password")}
+                className={cn("", {
+                  "border-destructive": errors.password,
+                })}
+              />
+              <div
+                className="absolute top-1/2 -translate-y-1/2 ltr:right-4 rtl:left-4 cursor-pointer"
+                onClick={togglePasswordType}
+              >
+                {passwordType === "password" ? (
+                  <Icon
+                    icon="heroicons:eye"
+                    className="w-5 h-5 text-default-400"
+                  />
+                ) : (
+                  <Icon
+                    icon="heroicons:eye-slash"
+                    className="w-5 h-5 text-default-400"
+                  />
+                )}
+              </div>
+            </div>
+            {errors.password && (
+              <div className=" text-destructive mt-2">
+                {errors.password.message}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="mt-5 flex items-center gap-1.5 mb-8">
+          <Checkbox
+            size="sm"
+            className="border-default-300 mt-[1px]"
+            id="terms"
+          />
+          <Label
+            htmlFor="terms"
+            className="text-sm text-default-600 cursor-pointer whitespace-nowrap"
+          >
+            You accept our Terms & Conditions
+          </Label>
+        </div>
+        <Button
+          className="w-full"
+          disabled={isPending}
+          size={!isDesktop2xl ? "lg" : "md"}
+        >
+          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {isPending ? "Registering..." : "Create an Account"}
+        </Button>
+      </form>
+
+      <div className="mt-8 flex flex-wrap justify-center gap-4">
+        <Button
+          type="button"
+          size="icon"
+          variant="outline"
+          className="rounded-full  border-default-300 hover:bg-transparent"
+        >
+          <Image src={googleIcon} alt="google icon" className="w-6 h-6" />
+        </Button>
+        
+      </div>
+
+      <div className="mt-5 2xl:mt-8 text-center text-base text-default-300">
+        Already Have An Account? {" "}
+        <Link href="/auth/login" className="text-primary underline hover:text-amber-900">
+          <Badge className="hover:bg-amber-500">
+            Sign In
+          </Badge>
+        </Link>
+      </div>
+    </div>
+  );
+};
+
+export default RegForm;
+
+
+
+/***
+ * 
+ * 
+ * 
+      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 xl:mt-7">
         <div className="space-y-4">
           <div>
             <Label htmlFor="name" className="mb-2 font-medium text-default-300">
               Full Name{" "}
             </Label>
             <Input
+            
+              {...register("name")}
               type="text"
-              name="fullName"
+              id="name"
               value={formData.fullName}
-              onChange={handleInputChange}
               required
             />
             {errors.name && (
@@ -221,10 +444,12 @@ const RegForm = () => {
             )}
           </div>
           <div>
-            <Label htmlFor="phone" className="mb-2 font-medium text-default-300">
+            <Label htmlFor="phoneNumber" className="mb-2 font-medium text-default-300">
               Phone Number{" "}
             </Label>
               <Input
+                {...register("phoneNumber")}
+                id="phoneNumber"
                 type="tel"
                 name="phoneNumber"
                 value={formData.phoneNumber}
@@ -246,8 +471,10 @@ const RegForm = () => {
               Email Address{" "}
             </Label>
             <Input
+              {...register("email")}
               type="email"
               name="email"
+              id="email"
               value={formData.email}
               onChange={handleInputChange}
               required
@@ -267,8 +494,10 @@ const RegForm = () => {
             </Label>
             <div className="relative">
               <Input
+                {...register("password")}
                 type="password"
                 name="password"
+                id="password"
                 value={formData.password}
                 onChange={handleInputChange}
                 required
@@ -307,6 +536,7 @@ const RegForm = () => {
               <Input
                 type="password"
                 name="confirmPassword"
+                id="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 required
@@ -363,31 +593,5 @@ const RegForm = () => {
       
       </form>
       
-      <div className="mt-8 flex flex-wrap justify-center gap-4">
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full  border-default-300 hover:bg-transparent"
-        >
-          <Image src={googleIcon} alt="google icon" className="w-6 h-6" />
-        </Button>
-        
-      </div>
-
-      <div className="mt-5 2xl:mt-8 text-center text-base text-default-300">
-        Already Have An Account? {" "}
-        <Link href="/auth/login" className="text-primary underline hover:text-amber-900">
-          <Badge className="hover:bg-amber-500">
-            Sign In
-          </Badge>
-        </Link>
-      </div>
-    </div>
-  );
-};
-
-export default RegForm;
-
-
-
+ * 
+ */
