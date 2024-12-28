@@ -168,6 +168,21 @@ const LogInForm = () => {
 
   };
 
+  const handleClick = async () => {
+    setIsRegistering(true);
+
+    try {
+      // Simulating registration process (e.g., API call)
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate async operation
+
+      // The user will be redirected to the register page once registration completes.
+    } catch (error) {
+      console.error('Registration failed:', error);
+    } finally {
+      setIsRegistering(false);
+    }
+  };
+
   return (
     <div className="w-full py-1">
       <Link href="/dashboard" className="flex justify-center">
@@ -278,14 +293,14 @@ const LogInForm = () => {
                   Don't have an account yet? 
                   
                   <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
-                      <Button
-                          className="bg-slate-400 hover:bg-amber-900 text-white"
-                          disabled={isRegistering}
-                          color="dark"
-                        >
-                          {isRegistering && <Loader2 className="mr-2 h-10 w-10 animate-spin" />}
-                          {isRegistering ? "Loading..." : "Register Account"}
-                      </Button>
+                    <Button
+                      className="bg-slate-400 hover:bg-amber-900 text-white"
+                      onClick={handleClick} // Trigger loading indicator when the button is clicked
+                      disabled={isRegistering} // Disable the button while loading
+                    >
+                      {isRegistering && <Loader2 className="mr-2 h-10 w-10 animate-spin" />}
+                      {isRegistering ? "Loading..." : "Register Account"}
+                    </Button>
                   </Link>
             </Badge>
             
