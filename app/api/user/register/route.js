@@ -26,8 +26,12 @@ export async function POST(request, response) {
 
     const database = admin.firestore(); */
 
-    let reqBody = await request.json();
-    console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
+    //let reqBody = await request.json();
+    //console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
+    const bodyText = await request.text();
+    const reqBody = JSON.parse(bodyText); // Parse manually
+    console.log("API USER REGISTER :::: REQ BODY :::: ", reqBody);
+    
     //const body = JSON.parse(reqBody);
     //console.log("API USER REGISTER :::: PARSED BODY :::: ", body)
     
@@ -134,7 +138,7 @@ export async function POST(request, response) {
 
     */
 
-    return NextResponse.json({
+    return response.json({
       status: "success",
       message: "User created successfully"
     });
@@ -143,7 +147,7 @@ export async function POST(request, response) {
 
   } catch (e) {
     console.log("An error occurred:", e);
-    return NextResponse.json({
+    return response.json({
       status: "fail",
       message: "Something went wrong",
       data: e,
