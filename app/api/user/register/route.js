@@ -12,7 +12,7 @@ import { auth } from  "@/firebase/index";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 //import admin from "firebase-admin";
-import { firestore } from  "@/firebase/firebaseAdmin";
+import { firestore, auth as authy, admin } from  "@/firebase/firebaseAdmin";
 
 export async function POST(request, response) {
   try {
@@ -53,17 +53,19 @@ export async function POST(request, response) {
         //window.location.assign("/");
         //reset();
 
-        
+        /** 
         // Save user details to Firestore
         await setDoc(doc(db, "users", userObj.user.uid), {
-          fullName: data.name,
-          email: data.email,
+          name: name,
+          email: email,
           role: "agent", // Default role
           createdAt: new Date().toISOString(),
         }).then(async (result) => {
           console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
-        })
+        })  */
+
       });
+
 
           /**
            // Send email verification
