@@ -138,19 +138,10 @@ export async function POST(request, response) {
 
     */
 
-    return response.json({
-      status: "success",
-      message: "User created successfully"
-    });
-
-
+  
 
   } catch (e) {
     console.log("An error occurred:", e);
-    return response.json({
-      status: "fail",
-      message: "Something went wrong",
-      data: e,
-    });
+    
   }
 }
