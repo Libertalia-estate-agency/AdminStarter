@@ -13,6 +13,7 @@ import Logo from "@/public/images/watermark/libertalia.png"
 import { useRouter } from "next/router";
 
 import Image from "next/image";
+import Link from "next/link";
 
 const tourOptions = {
   defaultStepOptions: {
@@ -57,7 +58,9 @@ const UiTour = () => {
               </CardContent>
               <CardContent>
                 <div className="mb-4">
-                  <Button>Commence Tour</Button>
+                  <Link href="/user-profile" passHref>
+                    <Button>Complete Profile</Button>
+                  </Link>
                 </div>
 
                 <p className=" text-muted-foreground mb-4">

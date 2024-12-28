@@ -36,6 +36,9 @@ export async function POST(request, response) {
       console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userId));
     });
 
+    
+
+    /**
     //const userId = userCredential.user.uid;
     // Save user details to Firestore
     await setDoc(doc(db, "users", userId), {
@@ -46,8 +49,6 @@ export async function POST(request, response) {
     }).then(async (result) => {
       console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
     });
-
-    /**
      * 
     // Respond with success
     return response.json({
