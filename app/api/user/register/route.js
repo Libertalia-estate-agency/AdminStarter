@@ -37,7 +37,6 @@ export async function POST(request, response) {
     });
 
     //const userId = userCredential.user.uid;
-
     // Save user details to Firestore
     await setDoc(doc(db, "users", userId), {
       fullName: name,
