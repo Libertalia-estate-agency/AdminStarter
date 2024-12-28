@@ -3,7 +3,6 @@ import { user } from "../data";
 import avatar3 from "@/public/images/avatar/avatar-3.jpg";
 
 //import { firestore, auth } from  "@/firebase/firebaseAdmin";
-import { getAccessToken } from "./accessToken.js";
 import axios from "axios";
 
 import { db } from "@/firebase/index";
@@ -12,8 +11,20 @@ import { doc, setDoc } from "firebase/firestore";
 import { auth } from  "@/firebase/index";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
+//import admin from "firebase-admin";
+import { firestore } from  "@/firebase/firebaseAdmin";
+
 export async function POST(request, response) {
   try {
+/**
+ * 
+    if (!admin.apps.length) {
+      admin.initializeApp({
+        credential: admin.credential.cert(require("./serviceAccount.json")),
+      });
+    }
+
+    const database = admin.firestore(); */
 
     let reqBody = await request.json();
     console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
@@ -26,23 +37,15 @@ export async function POST(request, response) {
     //const foundUser = user.find((u) => u.email === reqBody.email);
     //console.log("API USER REGISTER :::: foundUser?| :::: " , foundUser);
 
-    
+    let userId = '';
       // Create user with email and password
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       .then(async (userObj) => {
-        
-        console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj.user.uid));
-        //objUser.uid = userObj.user.uid;
-        //console.log("REG FORM ::: objUser ::: " + JSON.stringify(objUser));
 
-      
-        // Save user details to Firestore
-        await setDoc(doc(db, "users", userObj.user.uid), {
-          name,
-          email,
-          role: 'Agent',
-          createdAt: new Date().toISOString(),
-        });
+        //console.log("REG FORM ::: userObj ::: " + JSON.stringify(userObj));
+
+        console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj.user.uid));
+        userId = userObj.user.uid;
         
         //const user = userCredential.user;
         //console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
@@ -73,14 +76,34 @@ export async function POST(request, response) {
         */
         //console.log({ uid: userObj.user.uid, email: userObj.user.email });
         
+      }).then(async () => {
+
+        //const user = userCredential.user;
+        //console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
+        //objUser.uid = userObj.user.uid;
+          //console.log("REG FORM ::: objUser ::: " + JSON.stringify(objUser));
+
+         
+
       }).catch((error) => {
         console.error("Error creating user:", error);
         //toast.error(error.message);
       });
 
-      const user = userCredential.user;
-      console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
-    
+      /**
+        // Save user details to Firestore      
+        await firestore.collection("users").doc(userId).set({
+          name,
+          email,
+          role: 'Agent',
+          createdAt: new Date().toISOString(),
+        }).then(() => {
+          console.log("User details saved to Firestore");
+        });
+ */
+
+      
+        
 /**
 
     const registerResponse = await axios.post(
@@ -108,7 +131,6 @@ export async function POST(request, response) {
     */
 
     return NextResponse.json({
-      uid: userRecord.uid,
       status: "success",
       message: "User created successfully",
       data: reqBody,
