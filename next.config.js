@@ -51,6 +51,7 @@ const nextConfig = {
       },
     ],
   },
+  distDir: "public",
 };
 
 module.exports = nextConfig;
