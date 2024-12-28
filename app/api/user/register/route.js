@@ -15,63 +15,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { firestore } from  "@/firebase/firebaseAdmin";
 
 export async function POST(request, response) {
-  /**
   try {
-
-    let userId = '';
-
-    // Parse request body
-    const reqBody = await request.json();
-    console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
-
-    const { email, name, password } = reqBody;
-    console.log("API USER REGISTER :::: EMAIL, NAME, Password :::: ", email, name, password);
-
-    // Create the user with email and password
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    .then(async (userObj) => {
-
-      //console.log("REG FORM ::: userObj ::: " + JSON.stringify(userObj));
-      userId = userObj.user.uid;
-      console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userId));
-    });
-
-    //const userId = userCredential.user.uid;
-    // Save user details to Firestore
-    await setDoc(doc(db, "users", userId), {
-      fullName: name,
-      email: email,
-      role: "agent", // Default role
-      createdAt: new Date().toISOString(),
-    }).then(async (result) => {
-      console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
-    });
-
-    // Respond with success
-    return response.json({
-      status: "success",
-      message: "User created successfully",
-    });
-  } catch (error) {
-    console.error("An error occurred:", error);
-
-    // Respond with failure
-    return response.json({
-      status: "fail",
-      message: "Something went wrong",
-      data: error.message, // Provide error message for debugging
-    });
-
-     
-  }   */
-
-}
-
-
-/**
- * 
- * 
- * try {
 /**
  * 
     if (!admin.apps.length) {
@@ -80,7 +24,7 @@ export async function POST(request, response) {
       });
     }
 
-    const database = admin.firestore(); *
+    const database = admin.firestore(); */
 
     let reqBody = await request.json();
     console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
@@ -109,7 +53,7 @@ export async function POST(request, response) {
         //window.location.assign("/");
         //reset();
 
-        /**
+        
         // Save user details to Firestore
         await setDoc(doc(db, "users", userObj.user.uid), {
           fullName: data.name,
@@ -118,6 +62,8 @@ export async function POST(request, response) {
           createdAt: new Date().toISOString(),
         }).then(async (result) => {
           console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
+        })
+      });
 
           /**
            // Send email verification
@@ -129,7 +75,7 @@ export async function POST(request, response) {
               console.error("Error sending verification email:", error);
             });
         });
-        
+  
         //console.log({ uid: userObj.user.uid, email: userObj.user.email });
         
       }).then(async () => {
@@ -146,7 +92,7 @@ export async function POST(request, response) {
         //toast.error(error.message);
       });
 
-      
+      /**
         // Save user details to Firestore      
         await firestore.collection("users").doc(userId).set({
           name,
@@ -184,12 +130,21 @@ export async function POST(request, response) {
     reqBody.image = avatar3;
     user.push(reqBody);
 
+    */
 
     return NextResponse.json({
       status: "success",
       message: "User created successfully"
     });
 
-  } 
- * 
- */
+
+
+  } catch (e) {
+    console.log("An error occurred:", e);
+    return NextResponse.json({
+      status: "fail",
+      message: "Something went wrong",
+      data: e,
+    });
+  }
+}

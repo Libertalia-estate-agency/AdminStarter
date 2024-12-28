@@ -11,8 +11,62 @@ import User from "@/public/images/avatar/user1.png";
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 import { Fragment } from "react";
+
+import { useEffect, useState } from "react";
+import { db } from "@/firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { auth } from "@/firebase/firebaseAdmin";
+
+
 const Header = () => {
+
+
   const location = usePathname();
+
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        // Listen for the authenticated user
+        onAuthStateChanged(auth, async (user) => {
+          //console.log("USER ::: " + JSON.stringify(user));
+          if (user) {
+            // Fetch user data from Firestore
+            const userRef = doc(db, "users", user.uid);
+            console.log("User ID:", user.uid);
+            //console.log("userRef :: " , JSON.stringify(userRef));
+            //console.log("userRef :: " , JSON.stringify(userRef.id))
+            const userDoc = await getDoc(userRef);
+            console.log("userRef :: " , JSON.stringify(userDoc))
+
+            if (userDoc.exists()) {
+              setUserData(userDoc.data()); // Save user data (e.g., name) in state
+              console.log("USER DATA ::: " + JSON.stringify(userData))
+            } else {
+              console.log("No such user data!");
+            }
+          } else {
+            console.log("No user is authenticated.");
+          }
+        });
+      } catch (error) {
+        console.error("Error fetching user data: ", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+
   return (
     <Fragment>
       <Breadcrumbs>
@@ -46,9 +100,21 @@ const Header = () => {
                   className="h-20 w-20 lg:w-32 lg:h-32 rounded-full"
                 />
               </div>
-              <div>
-                <div className="text-xl lg:text-2xl font-semibold text-primary-foreground mb-1">Mpilo Hlophe</div>
-                <div className="text-xs lg:text-sm font-medium text-default-100 dark:text-default-900 pb-1.5">Administrator</div>
+              <div> 
+                {
+                  userData ? (
+                    <div>
+                      <div className="text-xl lg:text-2xl font-semibold text-primary-foreground mb-1">{userData.name}</div>
+                      <div className="text-xs lg:text-sm font-medium text-default-100 dark:text-default-900 pb-1.5">{userData.role}</div>
+                    </div>
+                  ) : (
+                    <div>
+                      <div className="text-xl lg:text-2xl font-semibold text-primary-foreground mb-1">Sphiwe Mtsweni</div>
+                      <div className="text-xs lg:text-sm font-medium text-default-100 dark:text-default-900 pb-1.5">Administrator</div>
+                    </div>
+                  )
+                }
+                
               </div>
             </div>
             <Button asChild className="absolute bottom-5 ltr:right-6 rtl:left-6 rounded px-5 hidden lg:flex" size="sm">

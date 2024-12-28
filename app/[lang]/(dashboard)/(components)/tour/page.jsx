@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShepherdTour, ShepherdTourContext } from "react-shepherd";
@@ -10,12 +10,12 @@ import "shepherd.js/dist/css/shepherd.css";
 import tourlogo from "@/public/images/watermark/codeshaperlogo1.png";
 import Logo from "@/public/images/watermark/libertalia.png"
 
+import { useRouter } from "next/router";
+
 import Image from "next/image";
 import Link from "next/link";
 
-import { useRouter } from 'next/router';
 import { Loader2 } from "lucide-react";
-
 
 const tourOptions = {
   defaultStepOptions: {
@@ -38,24 +38,19 @@ const Autton = () => {
 
 const UiTour = () => {
 
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true); // Component is mounted
-  }, []);
+  const handleClick = async () => {
+    setIsLoading(true);
 
-  const handleNavigation = async () => {
-    setLoading(true); // Start loading indicator
-
-    if (isMounted) {
-      // Use router.push to navigate to user-profile page
-      await router.push('/user-profile');
+    try {
+      // Simulate some async operation (e.g., fetching user data or completing profile)
+      await new Promise((resolve) => setTimeout(resolve, 12000)); // Simulate async task
+    } catch (error) {
+      console.error('Error completing profile:', error);
+    } finally {
+      setIsLoading(false);
     }
-    
-    // Set loading to false once navigation is complete
-    setLoading(false);
   };
 
   return (
@@ -80,20 +75,16 @@ const UiTour = () => {
               </CardContent>
               <CardContent>
                 <div className="mb-4">
+                <Link href="/user-profile" passHref>
                   <Button
-                      onClick={handleNavigation}
-                      disabled={loading} // Disable button while loading
-                      variant="contained"
-                      color="primary"
-                      style={{ position: 'relative' }}
-                    >
-                      {loading ? (
-                        <Loader2 size={30} style={{ position: 'absolute' }} className="mr-2 h-4 w-4 animate-spin" />
-                      ) : (
-                        'Complete Profile'
-                      )}
-                    </Button>
-                    
+                    className="bg-amber-400 hover:bg-amber-900 text-white"
+                    onClick={handleClick} // Trigger loading indicator when the button is clicked
+                    disabled={isLoading} // Disable the button while loading
+                  >
+                    {isLoading && <Loader2 className="mr-2 h-10 w-10 animate-spin" />}
+                    {isLoading ? "Loading..." : "Complete Profile"}
+                  </Button>
+                </Link>
                 </div>
 
                 <p className=" text-muted-foreground mb-4">

@@ -173,7 +173,7 @@ const LogInForm = () => {
 
     try {
       // Simulating registration process (e.g., API call)
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate async operation
+      await new Promise((resolve) => setTimeout(resolve, 12000)); // Simulate async operation
 
       // The user will be redirected to the register page once registration completes.
     } catch (error) {

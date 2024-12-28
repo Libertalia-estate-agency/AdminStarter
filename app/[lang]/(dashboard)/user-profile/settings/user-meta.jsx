@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import avatar from "@/public/images/avatar/avatar-3.jpg"
+import avatar from "@/public/images/avatar/user1.png"
 import { Icon } from "@iconify/react";
 import Image from "next/image";
 const UserMeta = () => {
