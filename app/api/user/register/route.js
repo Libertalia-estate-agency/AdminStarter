@@ -49,7 +49,7 @@ export async function POST(request, response) {
     });
 
     // Respond with success
-    return NextResponse.json({
+    return response.json({
       status: "success",
       message: "User created successfully",
     });
@@ -57,7 +57,7 @@ export async function POST(request, response) {
     console.error("An error occurred:", error);
 
     // Respond with failure
-    return NextResponse.json({
+    return response.json({
       status: "fail",
       message: "Something went wrong",
       data: error.message, // Provide error message for debugging
