@@ -132,8 +132,7 @@ export async function POST(request, response) {
 
     return NextResponse.json({
       status: "success",
-      message: "User created successfully",
-      data: reqBody,
+      message: "User created successfully"
     });
 
 
