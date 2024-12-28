@@ -47,20 +47,31 @@ export async function POST(request, response) {
       console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
     });
 
+    /**
+     * 
     // Respond with success
     return response.json({
       status: "success",
       message: "User created successfully",
     });
+
+    */
   } catch (error) {
     console.error("An error occurred:", error);
 
+    
+    /**
+     * 
+     * 
     // Respond with failure
     return response.json({
       status: "fail",
       message: "Something went wrong",
       data: error.message, // Provide error message for debugging
     });
+
+     * 
+     */
   }
 
 }
