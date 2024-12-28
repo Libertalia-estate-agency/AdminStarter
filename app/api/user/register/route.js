@@ -15,7 +15,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 import { firestore } from  "@/firebase/firebaseAdmin";
 
 export async function POST(request, response) {
-  
+  /**
   try {
 
     let userId = '';
@@ -36,9 +36,6 @@ export async function POST(request, response) {
       console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userId));
     });
 
-    
-
-    /**
     //const userId = userCredential.user.uid;
     // Save user details to Firestore
     await setDoc(doc(db, "users", userId), {
@@ -49,21 +46,15 @@ export async function POST(request, response) {
     }).then(async (result) => {
       console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
     });
-     * 
+
     // Respond with success
     return response.json({
       status: "success",
       message: "User created successfully",
     });
-
-    */
   } catch (error) {
     console.error("An error occurred:", error);
 
-    
-    /**
-     * 
-     * 
     // Respond with failure
     return response.json({
       status: "fail",
@@ -71,9 +62,8 @@ export async function POST(request, response) {
       data: error.message, // Provide error message for debugging
     });
 
-     * 
-     */
-  }
+     
+  }   */
 
 }
 

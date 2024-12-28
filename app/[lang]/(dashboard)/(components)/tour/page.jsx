@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShepherdTour, ShepherdTourContext } from "react-shepherd";
@@ -10,10 +10,12 @@ import "shepherd.js/dist/css/shepherd.css";
 import tourlogo from "@/public/images/watermark/codeshaperlogo1.png";
 import Logo from "@/public/images/watermark/libertalia.png"
 
-import { useRouter } from "next/router";
-
 import Image from "next/image";
 import Link from "next/link";
+
+import { useRouter } from 'next/router';
+import { Loader2 } from "lucide-react";
+
 
 const tourOptions = {
   defaultStepOptions: {
@@ -35,6 +37,26 @@ const Autton = () => {
 };
 
 const UiTour = () => {
+
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true); // Component is mounted
+  }, []);
+
+  const handleNavigation = async () => {
+    setLoading(true); // Start loading indicator
+
+    if (isMounted) {
+      // Use router.push to navigate to user-profile page
+      await router.push('/user-profile');
+    }
+    
+    // Set loading to false once navigation is complete
+    setLoading(false);
+  };
 
   return (
     <div>
@@ -58,9 +80,20 @@ const UiTour = () => {
               </CardContent>
               <CardContent>
                 <div className="mb-4">
-                  <Link href="/user-profile" passHref>
-                    <Button>Complete Profile</Button>
-                  </Link>
+                  <Button
+                      onClick={handleNavigation}
+                      disabled={loading} // Disable button while loading
+                      variant="contained"
+                      color="primary"
+                      style={{ position: 'relative' }}
+                    >
+                      {loading ? (
+                        <Loader2 size={30} style={{ position: 'absolute' }} className="mr-2 h-4 w-4 animate-spin" />
+                      ) : (
+                        'Complete Profile'
+                      )}
+                    </Button>
+                    
                 </div>
 
                 <p className=" text-muted-foreground mb-4">
