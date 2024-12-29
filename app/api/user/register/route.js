@@ -14,6 +14,9 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 //import admin from "firebase-admin";
 import { firestore, auth as authy, admin } from  "@/firebase/firebaseAdmin";
 
+/**
+ * 
+ * 
 export async function POST(request, response) {
   try {
 /**
@@ -26,12 +29,8 @@ export async function POST(request, response) {
 
     const database = admin.firestore(); */
 
-    //let reqBody = await request.json();
-    //console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
-    const bodyText = await request.text();
-    const reqBody = JSON.parse(bodyText); // Parse manually
-    console.log("API USER REGISTER :::: REQ BODY :::: ", reqBody);
-    
+    let reqBody = await request.json();
+    console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
     //const body = JSON.parse(reqBody);
     //console.log("API USER REGISTER :::: PARSED BODY :::: ", body)
     
@@ -136,12 +135,23 @@ export async function POST(request, response) {
     reqBody.image = avatar3;
     user.push(reqBody);
 
-    */
+    *
 
-  
+    return response.json({
+      status: "success",
+      message: "User created successfully"
+    });
+
+
 
   } catch (e) {
     console.log("An error occurred:", e);
-    
+    return response.json({
+      status: "fail",
+      message: "Something went wrong",
+      data: e,
+    });
   }
 }
+
+*/
