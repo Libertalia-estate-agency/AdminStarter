@@ -43,9 +43,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 
 const LogInForm = () => {
 
-  const [isPending, startTransition] = React.useTransition();       // For "Sign In" button
-  const [isRegistering, setIsRegistering] = React.useState(false);    // For "Register Account" button
-  
+  const [isPending, startTransition] = React.useTransition();
   const [passwordType, setPasswordType] = React.useState("password");
   const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
 
@@ -79,7 +77,6 @@ const LogInForm = () => {
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
-  
   const onSubmit = (data) => {
     startTransition(async () => {
 
@@ -120,21 +117,7 @@ const LogInForm = () => {
     });
   };
 
-   *     let response = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-
-      if (response?.ok) {
-        //toast.success("Login Successful");
-        console.log("Login Succesful, instead of toast");
-
-      } else if (response?.error) {
-        console.log("ERROR: " + response?.error);
-        toast.error(response?.error);
-      }
-
+   * 
    */
 
   const handleLogin = async (e) => {
@@ -142,7 +125,7 @@ const LogInForm = () => {
 
     try {
       setIsLoading(true);  
-      setIsRegistering(true);
+
       startTransition(async () => {
 
       // Create user with email and password
@@ -182,7 +165,7 @@ const LogInForm = () => {
         Please Enter Your Login Information To Access Platform.
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 2xl:mt-7">
+      <form onSubmit={handleLogin} className="mt-5 2xl:mt-7">
         <div>
           <Label htmlFor="email" className="mb-2 font-medium text-default-600">
             Email{" "}
@@ -280,11 +263,11 @@ const LogInForm = () => {
                   <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
                       <Button
                           className="bg-slate-400 hover:bg-amber-900 text-white"
-                          disabled={isRegistering}
+                          disabled={isPending}
                           color="dark"
                         >
-                          {isRegistering && <Loader2 className="mr-2 h-10 w-10 animate-spin" />}
-                          {isRegistering ? "Loading..." : "Register Account"}
+                          {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                          {isPending ? "Loading..." : "Register Account"}
                       </Button>
                   </Link>
             </Badge>
