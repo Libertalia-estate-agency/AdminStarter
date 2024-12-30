@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShepherdTour, ShepherdTourContext } from "react-shepherd";
@@ -13,6 +13,9 @@ import Logo from "@/public/images/watermark/libertalia.png"
 import { useRouter } from "next/router";
 
 import Image from "next/image";
+import Link from "next/link";
+
+import { Loader2 } from "lucide-react";
 
 const tourOptions = {
   defaultStepOptions: {
@@ -34,6 +37,21 @@ const Autton = () => {
 };
 
 const UiTour = () => {
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = async () => {
+    setIsLoading(true);
+
+    try {
+      // Simulate some async operation (e.g., fetching user data or completing profile)
+      await new Promise((resolve) => setTimeout(resolve, 12000)); // Simulate async task
+    } catch (error) {
+      console.error('Error completing profile:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -57,7 +75,16 @@ const UiTour = () => {
               </CardContent>
               <CardContent>
                 <div className="mb-4">
-                  <Button>Commence Tour</Button>
+                <Link href="/user-profile" passHref>
+                  <Button
+                    className="bg-amber-400 hover:bg-amber-900 text-white"
+                    onClick={handleClick} // Trigger loading indicator when the button is clicked
+                    disabled={isLoading} // Disable the button while loading
+                  >
+                    {isLoading && <Loader2 className="mr-2 h-10 w-10 animate-spin" />}
+                    {isLoading ? "Loading..." : "Complete Profile"}
+                  </Button>
+                </Link>
                 </div>
 
                 <p className=" text-muted-foreground mb-4">

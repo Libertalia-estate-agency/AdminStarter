@@ -80,9 +80,9 @@ const RegForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  /*
   useEffect(()=> {
    
-    /**
     const usersRef = collection(db, "users");
     const q = query(usersRef);
     
@@ -94,8 +94,8 @@ const RegForm = () => {
         .catch((error) => {
             console.error("Error querying or setting document:", error);
         });
-    */
-  });
+    
+  });  */
 
 
   const {
@@ -119,65 +119,24 @@ const RegForm = () => {
 
       let objUser = { ...data};
       console.log("REG FORM ::: ONSUBMIT ::: DATA ::: " + JSON.stringify(objUser));
+
+      //console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj));
+      let response = await addUser(objUser);
+      console.log("response ::: " + JSON.stringify(response));
+
+      if (response?.status === "success") {
+      console.log("HANDLE REGISTER ::: CREATED USER successfully");
+      toast.success("Registration Successful");
+
+      // toast.success(response?.message);
+      router.push("/");
+      reset();
+      } else {
+        toast.error(response?.message);
+      }
       
 
 
-      // Create user with email and password
-      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password)
-      .then(async (userObj) => {
-        
-        console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj.user.uid));
-        objUser.uid = userObj.user.uid;
-        console.log("REG FORM ::: objUser ::: " + JSON.stringify(objUser));
-
-        //console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj));
-        let response = await addUser(objUser);
-        console.log("response ::: " + JSON.stringify(response));
-
-        if (response?.status === "success") {
-        console.log("HANDLE REGISTER ::: CREATED USER successfully");
-        toast.success("Registration Successful");
-
-        // toast.success(response?.message);
-        
-        router.push("/");
-        reset();
-        } else {
-          toast.error(response?.message);
-        }
-        //const user = userCredential.user;
-        //console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
-        //router.push("/");
-        //window.location.assign("/");
-        //reset();
-
-        /**
-        // Save user details to Firestore
-        await setDoc(doc(db, "users", userObj.user.uid), {
-          fullName: data.name,
-          email: data.email,
-          role: "agent", // Default role
-          createdAt: new Date().toISOString(),
-        }).then(async (result) => {
-          console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
-
-          /**
-           // Send email verification
-            await sendEmailVerification(userObj.user).then(() => {
-              console.log("Verification email sent to", userObj.user.email);
-              reset();
-              router.push("/login");
-            }).catch((error) => {
-              console.error("Error sending verification email:", error);
-            });
-        });
-        */
-       
-        
-      }).catch((error) => {
-        console.error("Error creating user:", error);
-        toast.error(error.message);
-      });
 
 /**
         

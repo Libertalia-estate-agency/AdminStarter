@@ -83,30 +83,21 @@ const LogInForm = () => {
   const onSubmit = (data) => {
     startTransition(async () => {
 
-      let response = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
+      console.log("data ::: " + JSON.stringify(data));  
 
-      if (response?.ok) {
-        //toast.success("Login Successful");
-        console.log("Login Succesful, instead of toast");
-
-      } else if (response?.error) {
-        console.log("ERROR: " + response?.error);
-        toast.error(response?.error);
-      }
-
-      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+  
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password)
       .then(() => {
-        console.log("SIGNING IN USER WITH EMAIL ::: " + email);
-        const user = userCredential.user;
-        console.log("HANDLE LOGIN ::: SIGNING IN USER ::: " + JSON.stringify(user.email));
+        console.log("SIGNING IN USER WITH EMAIL ::: " + data.email);
+          
         toast.success("Login Successful");
         window.location.assign("/tour");
-        console.log("User logged in:", userCredential.user);
+        //const user = userCredential.user;
+        //console.log("HANDLE LOGIN ::: SIGNING IN USER ::: " + JSON.stringify(user.email));
+        //console.log("User logged in : ", userCredential.user);
       })
+
+        
 
     })
   };
@@ -129,7 +120,21 @@ const LogInForm = () => {
     });
   };
 
-   * 
+   *     let response = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (response?.ok) {
+        //toast.success("Login Successful");
+        console.log("Login Succesful, instead of toast");
+
+      } else if (response?.error) {
+        console.log("ERROR: " + response?.error);
+        toast.error(response?.error);
+      }
+
    */
 
   const handleLogin = async (e) => {
@@ -161,6 +166,22 @@ const LogInForm = () => {
     }
   
 
+  };
+
+  const handleClick = async () => {
+    setIsRegistering(true);
+
+    try {
+      // Simulating registration process (e.g., API call)
+      await new Promise((resolve) => setTimeout(resolve, 12000)); // Simulate async operation
+      window.location.assign("/auth/register");
+
+      // The user will be redirected to the register page once registration completes.
+    } catch (error) {
+      console.error('Registration failed:', error);
+    } finally {
+      setIsRegistering(false);
+    }
   };
 
   return (
@@ -271,17 +292,16 @@ const LogInForm = () => {
           <Badge color="secondary">
               <Star className=" ltr:mr-1 rtl:ml-1 h-3 w-3" />
                   Don't have an account yet? 
-                  
-                  <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
-                      <Button
-                          className="bg-slate-400 hover:bg-amber-900 text-white"
-                          disabled={isRegistering}
-                          color="dark"
-                        >
-                          {isRegistering && <Loader2 className="mr-2 h-10 w-10 animate-spin" />}
-                          {isRegistering ? "Loading..." : "Register Account"}
-                      </Button>
-                  </Link>
+                  <div className="text-amber-800 underline text-base m-1"> 
+                    <Button
+                      className="bg-slate-400 hover:bg-amber-900 text-white"
+                      onClick={handleClick} // Trigger loading indicator when the button is clicked
+                      disabled={isRegistering} // Disable the button while loading
+                    >
+                      {isRegistering && <Loader2 className="mr-2 h-10 w-10 animate-spin" />}
+                      {isRegistering ? "Loading..." : "Register Account"}
+                    </Button>
+                  </div>
             </Badge>
             
           </div>
@@ -300,5 +320,6 @@ export default LogInForm;
  * {" "}
                   Register Account{" "}
                   
- * 
+ *                   <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
+
  */
