@@ -80,9 +80,9 @@ const RegForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  /*
   useEffect(()=> {
    
-    /**
     const usersRef = collection(db, "users");
     const q = query(usersRef);
     
@@ -94,8 +94,8 @@ const RegForm = () => {
         .catch((error) => {
             console.error("Error querying or setting document:", error);
         });
-    */
-  });
+    
+  });  */
 
 
   const {

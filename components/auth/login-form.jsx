@@ -174,6 +174,7 @@ const LogInForm = () => {
     try {
       // Simulating registration process (e.g., API call)
       await new Promise((resolve) => setTimeout(resolve, 12000)); // Simulate async operation
+      window.location.assign("/auth/register");
 
       // The user will be redirected to the register page once registration completes.
     } catch (error) {
@@ -291,8 +292,7 @@ const LogInForm = () => {
           <Badge color="secondary">
               <Star className=" ltr:mr-1 rtl:ml-1 h-3 w-3" />
                   Don't have an account yet? 
-                  
-                  <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
+                  <div className="text-amber-800 underline text-base m-1"> 
                     <Button
                       className="bg-slate-400 hover:bg-amber-900 text-white"
                       onClick={handleClick} // Trigger loading indicator when the button is clicked
@@ -301,7 +301,7 @@ const LogInForm = () => {
                       {isRegistering && <Loader2 className="mr-2 h-10 w-10 animate-spin" />}
                       {isRegistering ? "Loading..." : "Register Account"}
                     </Button>
-                  </Link>
+                  </div>
             </Badge>
             
           </div>
@@ -320,5 +320,6 @@ export default LogInForm;
  * {" "}
                   Register Account{" "}
                   
- * 
+ *                   <Link href="/auth/register" className="text-amber-800 underline text-base m-1">
+
  */

@@ -13,6 +13,72 @@ import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/
 
 //import admin from "firebase-admin";
 import { firestore, auth as authy, admin } from  "@/firebase/firebaseAdmin";
+/***
+ * 
+ * 
+ * 
+ *
+ * 
+ * 
+ */
+
+export async function POST(request, response) {
+
+  try {
+
+
+    let reqBody = await request.json();
+    console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
+    //const body = JSON.parse(reqBody);
+    //console.log("API USER REGISTER :::: PARSED BODY :::: ", body)
+    
+    const { email, name, password } = reqBody;
+    console.log("API USER REGISTER :::: EMAIL, NAME, ROLE :::: ", email, name, password);
+    
+    
+    let userId = '';
+    // Create user with email and password
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    .then(async (userObj) => {
+  
+      //console.log("REG FORM ::: userObj ::: " + JSON.stringify(userObj));
+  
+      console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj.user.uid));
+      userId = userObj.user.uid;
+      
+      //const user = userCredential.user;
+      //console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
+      //router.push("/");
+      //window.location.assign("/");
+      //reset();
+  
+      /** 
+      // Save user details to Firestore
+      await setDoc(doc(db, "users", userObj.user.uid), {
+        name: name,
+        email: email,
+        role: "agent", // Default role
+        createdAt: new Date().toISOString(),
+      }).then(async (result) => {
+        console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
+      })  */
+
+        
+    return new Response(JSON.stringify(userId), { status: 200 });
+  
+    });
+  
+    return new Response({ status: 200 });
+
+
+  } catch (error) {
+    console.error("Error creating user:", error);
+    return new Response(JSON.stringify({ error: "Failed to create user" }), {
+      status: 500,
+    });
+  }
+
+}
 
 /**
  * 
@@ -29,45 +95,10 @@ export async function POST(request, response) {
 
     const database = admin.firestore(); */
 
-    let reqBody = await request.json();
-    console.log("API USER REGISTER :::: REQ BODY :::: ", JSON.stringify(reqBody))
-    //const body = JSON.parse(reqBody);
-    //console.log("API USER REGISTER :::: PARSED BODY :::: ", body)
-    
-    const { email, name, password } = reqBody;
-    console.log("API USER REGISTER :::: EMAIL, NAME, ROLE :::: ", email, name, password);
-    
+   
     //const foundUser = user.find((u) => u.email === reqBody.email);
     //console.log("API USER REGISTER :::: foundUser?| :::: " , foundUser);
 
-    let userId = '';
-      // Create user with email and password
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-      .then(async (userObj) => {
-
-        //console.log("REG FORM ::: userObj ::: " + JSON.stringify(userObj));
-
-        console.log("CREATE USER WITH EMAIL AND PASSWORD RESPONSE ::: " + JSON.stringify(userObj.user.uid));
-        userId = userObj.user.uid;
-        
-        //const user = userCredential.user;
-        //console.log("HANDLE REGISTER ::: CREATED USER ::: " + JSON.stringify(user));
-        //router.push("/");
-        //window.location.assign("/");
-        //reset();
-
-        /** 
-        // Save user details to Firestore
-        await setDoc(doc(db, "users", userObj.user.uid), {
-          name: name,
-          email: email,
-          role: "agent", // Default role
-          createdAt: new Date().toISOString(),
-        }).then(async (result) => {
-          console.log("SET DOCUMENT RESULT ::: " + JSON.stringify(result));
-        })  */
-
-      });
 
 
           /**
@@ -155,3 +186,6 @@ export async function POST(request, response) {
 }
 
 */
+
+
+ 
